@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import "primeflex/primeflex.css";
+import "primeicons/primeicons.css";
+import { PrimeReactProvider } from "primereact/api";
+import "primereact/resources/primereact.css";
+import "primereact/resources/themes/tailwind-light/theme.css";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,7 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className + " h-screen"}>
+        <PrimeReactProvider
+          value={{ cssTransition: false }}
+          
+        >
+          {children}
+        </PrimeReactProvider>
+      </body>
     </html>
   );
 }
