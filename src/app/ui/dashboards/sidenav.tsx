@@ -3,7 +3,8 @@ import { Menu } from "primereact/menu";
 
 export default function SideNav() {
   let items = [
-    { label: "Accueil", icon: "pi pi-home" },
+    { label: "Accueil", icon: "pi pi-home", url: "" },
+    { label: "Classes", icon: "pi pi-users", url: "/dashboard/classes" },
     { label: "Mes cours passés", icon: "pi pi-history" },
     { label: "Aide", icon: "pi pi-question" },
   ];
