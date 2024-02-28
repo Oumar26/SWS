@@ -40,7 +40,12 @@ export default function Home() {
               Copyright : SoWeSign 2022 - Mentions légales
             </p>
           </div>
-          <div className="col-4 bg-white border-round opacity-80 flex flex-col align-items-center">
+          <div
+            className={
+              "col-4 border-round flex flex-col align-items-center " +
+              styles.rightPane
+            }
+          >
             <h3 className="text-center text-700">
               Entrez votre code établissement
             </h3>

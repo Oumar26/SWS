@@ -29,6 +29,23 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+@layer primereact {
+  .p-password-input {
+    width: 100% !important;
+  }
+
+  .p-button {
+    background: white !important;
+    color: grey;
+    border: none
+  }
+  
+  .p-button:hover {
+    background: azure !important;
+    color: grey !important;
+  }
+}
+
 /* @layer utilities {
   .text-balance {
     text-wrap: balance;
