@@ -20,3 +20,20 @@
 .rightPane {
   background-color: rgba(255, 255, 255, 0.8);
 }
+
+.p-password-input {
+  width: 100% !important;
+}
+
+.p-button {
+  background: white !important;
+  color: grey;
+  border: none;
+}
+
+.p-button:hover {
+  background: azure !important;
+  color: grey !important;
+}
+@layer primereact {
+}

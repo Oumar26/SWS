@@ -1,5 +1,6 @@
 "use client";
 
+import "@/app/ui/styles/login.module.css";
 import styles from "@/app/ui/styles/login.module.css";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
@@ -79,10 +80,10 @@ export default function Home() {
             </div>
             <div className="field flex flex-col w-full px-3">
               <label htmlFor="">Mot de passe</label>
-              <Password className="" toggleMask feedback={false} />
+              <Password className="pwd" toggleMask feedback={false} />
             </div>
             <div className="mb-auto px-3 w-full">
-              <Button label="Valider" className="w-full" />
+              <Button label="Valider" className="w-full login" />
             </div>
           </div>
         </div>
