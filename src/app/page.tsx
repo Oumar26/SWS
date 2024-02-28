@@ -5,11 +5,108 @@ import styles from "@/app/ui/styles/login.module.css";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/app/firebase/firebase";
 import OtpInput from "react-otp-input";
+import { redirect } from "next/navigation";
+import { Schools } from "./hooks/Schools";
 
 export default function Home() {
   const [otp, setOtp] = useState("");
+  const [errorOtp, setErreurOtp] = useState(false);
+  const [visibleOtpMsg, setVisibleOtpMsg] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
+  const [isRealOtp, setIsRealOtp] = useState(false);
+  const [validation, setValidation] = useState("");
+  const [reDirect, setReDirect] = useState(false);
+  const [codesSchools, setCodesSchools]: any = useState([]);
+
+  const { getSchoolsCodes } = Schools();
+
+  const [formData, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    const fetchSchoolsCodes = async () => {
+      try {
+        const codes: any = await getSchoolsCodes();
+        setCodesSchools(codes);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des codes d'établissements:",
+          error
+        );
+      }
+    };
+
+    fetchSchoolsCodes();
+  }, []);
+
+  //check si le code d'établissement existe
+  const verifyOtp = (otp: number) => {
+    if (codesSchools.includes(Number(otp))) {
+      console.log("OTP correct !");
+      setErreurOtp(false);
+      setIsRealOtp(true);
+      setFormVisible(true);
+    } else {
+      console.log("OTP incorrect !");
+      setErreurOtp(true);
+      setIsRealOtp(false);
+    }
+  };
+
+  //listener sur le champ OTP
+  function handleChangeOtp(newOtp: any) {
+    setOtp(newOtp);
+    if (newOtp.length === 4) {
+      verifyOtp(newOtp);
+      setVisibleOtpMsg(true);
+    }
+  }
+
+  //listener sur le formulaire de connexion
+  function handleForm(event: any) {
+    const { name, value } = event.target;
+
+    setForm((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  }
+
+  //submit form
+  async function handleSubmit(e: any) {
+    e.preventDefault();
+    try {
+      const response = await signInWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+
+      console.log(auth);
+
+      localStorage.setItem("user", response.user.uid);
+
+      setReDirect(true);
+    } catch (error: any) {
+      if (error.code === "auth/invalid-credential") {
+        setValidation("Email ou mot de passe incorrecte");
+      }
+      //console.error(error);
+    }
+  }
+
+  if (reDirect) {
+    redirect("/dashboard");
+  }
+
   return (
     <div className={styles.main}>
       <div className={styles.cover}>
@@ -52,10 +149,19 @@ export default function Home() {
             </h3>
             <OtpInput
               value={otp}
-              onChange={setOtp}
+              onChange={handleChangeOtp}
               numInputs={4}
               renderSeparator={<pre> </pre>}
-              renderInput={(props) => <input {...props} />}
+              renderInput={(props) => (
+                <input
+                  {...props}
+                  disabled={isRealOtp} // Désactiver le champ si l'OTP est vérifié
+                  style={{
+                    ...props.style,
+                    backgroundColor: isRealOtp ? "#dddddd" : "white", // Griser le champ s'il est vérifié
+                  }}
+                />
+              )}
               shouldAutoFocus={true}
               inputType="tel"
               inputStyle={{
@@ -73,18 +179,66 @@ export default function Home() {
             <p className="m-1 font-italic text-500 text-sm">
               Code établissement
             </p>
+
+            {visibleOtpMsg ? (
+              errorOtp ? (
+                <p className="m-1 font-italic text-500 text-sm text-red-500	">
+                  {" "}
+                  Code établissement incorrect
+                </p>
+              ) : (
+                <p className="m-1 font-italic text-500 text-sm text-green-500">
+                  {" "}
+                  Code établissement correct{" "}
+                </p>
+              )
+            ) : (
+              ""
+            )}
+
             <hr className="mt-auto" />
-            <div className="field flex flex-col w-full px-3">
-              <label htmlFor="">Adresse email</label>
-              <InputText className="w-full" />
-            </div>
-            <div className="field flex flex-col w-full px-3">
-              <label htmlFor="">Mot de passe</label>
-              <Password className="pwd" toggleMask feedback={false} />
-            </div>
-            <div className="mb-auto px-3 w-full">
-              <Button label="Valider" className="w-full login" />
-            </div>
+
+            <form onSubmit={handleSubmit} className="w-full">
+              <div className="field flex flex-col w-full px-3">
+                <label htmlFor="">Adresse email</label>
+                <InputText
+                  className="w-full"
+                  type="email"
+                  required
+                  disabled={formVisible ? false : true}
+                  name="email"
+                  value={formData.email}
+                  onChange={handleForm}
+                />
+              </div>
+              <div className="field flex flex-col w-full px-3">
+                <label htmlFor="">Mot de passe</label>
+                <Password
+                  className="pwd"
+                  toggleMask
+                  feedback={false}
+                  required
+                  disabled={formVisible ? false : true}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleForm}
+                />
+              </div>
+              <div className="mb-auto px-3 w-full">
+                <Button
+                  label="Valider"
+                  className="w-full"
+                  disabled={formVisible ? false : true}
+                />
+              </div>
+            </form>
+
+            {validation.length > 0 ? (
+              <p className="text-red-500"> {validation}</p>
+            ) : (
+              ""
+            )}
+            <hr className="mb-auto" />
           </div>
         </div>
       </div>
