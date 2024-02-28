@@ -34,12 +34,12 @@ body {
     width: 100% !important;
   }
 
-  .p-button {
+  .login.p-button {
     background: white !important;
     color: grey;
-    border: none
+    border: none;
   }
-  
+
   .p-button:hover {
     background: azure !important;
     color: grey !important;

@@ -1,8 +1,17 @@
+"use client";
+
 import SideNav from "@/app/ui/dashboards/sidenav";
+import { redirect } from "next/navigation";
 import { Avatar } from "primereact/avatar";
 import { Menubar } from "primereact/menubar";
+import { useEffect } from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    if (!localStorage.getItem("user")) {
+      redirect("/");
+    }
+  });
   const start = (
     <img
       alt="logo"
