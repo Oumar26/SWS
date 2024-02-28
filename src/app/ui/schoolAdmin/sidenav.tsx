@@ -8,7 +8,6 @@ export default function SideNav() {
 
   let items = [
     { label: "Ajouter des cours", icon: "pi pi-plus", url: '/schoolAdmin/newClasse' },
-    { label: "Ajouter des écoles", icon: "pi pi-plus", url: '/schoolAdmin/newSchool' },
     { label: "Liste d'attente des élèves", icon: "pi pi-hourglass", url: '/schoolAdmin/waitLists' },
     { label: "Mon compte", icon: "pi pi-user-edit", url: '/schoolAdmin/profile' },
     { label: "Aide", icon: "pi pi-question", url: '/schoolAdmin/help' }
