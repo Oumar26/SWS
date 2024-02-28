@@ -24,7 +24,6 @@ export default function RootLayout({
       <body className={inter.className + " h-screen"}>
         <PrimeReactProvider
           value={{ cssTransition: false }}
-          
         >
           {children}
         </PrimeReactProvider>
