@@ -1,15 +1,15 @@
 "use client";
 
+import { auth } from "@/app/firebase/firebase";
 import "@/app/ui/styles/login.module.css";
 import styles from "@/app/ui/styles/login.module.css";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { redirect } from "next/navigation";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
-import { useState, useEffect } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/app/firebase/firebase";
+import { useEffect, useState } from "react";
 import OtpInput from "react-otp-input";
-import { redirect } from "next/navigation";
 import { Schools } from "./hooks/Schools";
 
 export default function Home() {
@@ -19,7 +19,9 @@ export default function Home() {
   const [formVisible, setFormVisible] = useState(false);
   const [isRealOtp, setIsRealOtp] = useState(false);
   const [validation, setValidation] = useState("");
-  const [reDirect, setReDirect] = useState(false);
+  const [reDirect, setReDirect] = useState(
+    localStorage.getItem("user") ? true : false
+  );
   const [codesSchools, setCodesSchools]: any = useState([]);
 
   const { getSchoolsCodes } = Schools();
@@ -102,6 +104,7 @@ export default function Home() {
       //console.error(error);
     }
   }
+  console.log(reDirect);
 
   if (reDirect) {
     redirect("/dashboard");
