@@ -1,9 +1,15 @@
 import { db } from "@/app/firebase/firebase";
-import { collection, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc
+} from "firebase/firestore";
 
 export const classesHook = () => {
+  const classesCollectionRef = collection(db, "classes");
   const getClasses = async () => {
-    const classesCollectionRef = collection(db, "classes");
     const q = query(classesCollectionRef);
 
     try {
@@ -23,6 +29,9 @@ export const classesHook = () => {
       return []; // Retourne un tableau vide en cas d'erreur
     }
   };
+  const addClass = async (data) => {
+    return await setDoc(doc(classesCollectionRef), data);
+  };
 
-  return { getClasses };
+  return { getClasses, addClass };
 };

@@ -1,10 +1,11 @@
-import { db } from "@/app/firebase/firebase";
+import { auth, db } from "@/app/firebase/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import {
   collection,
   doc,
-  getDoc,
   getDocs,
   query,
+  setDoc,
   where,
 } from "firebase/firestore";
 
@@ -36,10 +37,22 @@ export const userHook = () => {
       await getDocs(query(usersCollectionRef, where("class", "==", id)))
     ).docs.map((item) => {
       const val = item.data();
+      val.docId = item.id;
       val.data = { name: val.prenom + " " + val.nom };
       return val;
     });
   };
 
-  return { getUsers, getUser };
+  const addUser = async (user) => {
+    const val = await createUserWithEmailAndPassword(
+      auth,
+      user.email,
+      "p@ssw0rd"
+    );
+    user.id = val.user.uid;
+    return await setDoc(doc(usersCollectionRef), user);
+  };
+  let selectedUser;
+
+  return { getUsers, getUser, addUser, selectedUser };
 };
