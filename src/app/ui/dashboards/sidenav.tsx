@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 
@@ -22,6 +23,10 @@ export default function SideNav() {
         className="mt-auto mx-auto mb-3"
         severity="danger"
         label="Déconnexion"
+        onClick={() => {
+          localStorage.clear();
+          redirect("/")
+        }}
       />
     </div>
   );
