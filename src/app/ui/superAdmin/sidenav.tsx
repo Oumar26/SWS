@@ -9,7 +9,6 @@ export default function SideNav() {
   let items = [
     { label: "Ajouter des écoles", icon: "pi pi-plus", url: '/superAdmin/newSchool' },
     { label: "Droits", icon: "pi pi-hourglass", url: '/superAdmin/droits' },
-    { label: "Mon compte", icon: "pi pi-user-edit", url: '/superAdmin/profile' },
 
   ];
 
