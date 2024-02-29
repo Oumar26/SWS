@@ -6,6 +6,7 @@ export default function SideNav() {
   let items = [
     { label: "Accueil", icon: "pi pi-home", url: "" },
     { label: "Classes", icon: "pi pi-users", url: "/dashboard/classes" },
+    { label: "Admin", icon: "pi pi-users", url: "/superAdmin/droits" },
     { label: "Mes cours passés", icon: "pi pi-history" },
     { label: "Aide", icon: "pi pi-question" },
   ];
