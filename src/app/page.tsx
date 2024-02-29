@@ -178,6 +178,7 @@ export default function Home() {
                 color: "#383838",
                 borderRadius: "10px",
               }}
+
             />
             <p className="m-1 font-italic text-500 text-sm">
               Code établissement

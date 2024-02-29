@@ -1,8 +1,11 @@
+'use client'
 import SideNav from "@/app/ui/superAdmin/sidenav";
 import { Avatar } from "primereact/avatar";
 import { Menubar } from "primereact/menubar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+
+
   const start = (
     <img
       alt="logo"
